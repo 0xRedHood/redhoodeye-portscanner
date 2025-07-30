@@ -33,6 +33,8 @@ A professional network scanner with advanced features - everything in one file!
 pip install -r requirements.txt
 ```
 
+> **Quick Reference**: See [RedhoodEye_Commands.txt](RedhoodEye_Commands.txt) for all available commands and examples.
+
 ## Usage
 
 ### Basic scan
@@ -122,6 +124,20 @@ python RedhoodEye.py --target 192.168.1.1 --output results.json --format json
 python RedhoodEye.py --target 192.168.1.1 --output results.csv --format csv
 python RedhoodEye.py --target 192.168.1.1 --output report.html --format html
 ```
+
+## Complete Command Reference
+
+For a comprehensive list of all available commands and examples, see: **[RedhoodEye_Commands.txt](RedhoodEye_Commands.txt)**
+
+This file contains detailed examples for:
+- Basic scanning commands
+- Advanced scanning techniques
+- UDP scanning examples
+- Stealth scanning options
+- Proxy configuration
+- Scheduled scanning
+- System information gathering
+- And much more!
 
 ## Port Sets
 
@@ -224,6 +240,12 @@ The tool automatically detects the operating system and uses appropriate command
 ## Security Warning
 
 This tool is for educational and authorized testing purposes only. Only scan systems you own or have explicit permission to test.
+
+## Additional Resources
+
+- **[Complete Command Reference](RedhoodEye_Commands.txt)** - All commands and examples
+- **[Requirements](requirements.txt)** - Python dependencies
+- **[Main Program](RedhoodEye.py)** - Source code
 
 ## License
 
