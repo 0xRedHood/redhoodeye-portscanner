@@ -346,6 +346,10 @@ class PortScannerLogger:
                 self.stats(f"   {key}: {value:.2f}", **kwargs)
             else:
                 self.stats(f"   {key}: {value}", **kwargs)
+    
+    def file_saved(self, filename: str, format_type: str, **kwargs):
+        """Log when a file is successfully saved"""
+        self.success(f"Results saved to {filename} ({format_type} format)", **kwargs)
 
 # Common services and their default ports
 COMMON_SERVICES = {
@@ -1764,6 +1768,7 @@ EXAMPLES:
     python RedhoodEye.py --target 192.168.1.1 --ports database
     python RedhoodEye.py --target 192.168.1.1 --ports remote
     python RedhoodEye.py --target 192.168.1.1 --ports email
+    python RedhoodEye.py --target 192.168.1.1 --ports file
     python RedhoodEye.py --target 192.168.1.1 --ports common
 
   Advanced Usage:
@@ -1795,6 +1800,18 @@ EXAMPLES:
     python RedhoodEye.py --target 192.168.1.1 --log-file scan.log --log-level DEBUG
     python RedhoodEye.py --target 192.168.1.1 --no-colors
 
+  Proxy Scanning:
+    python RedhoodEye.py --target 192.168.1.1 --proxy http://proxy:8080
+    python RedhoodEye.py --target 192.168.1.1 --proxy socks5://proxy:1080
+    python RedhoodEye.py --target 192.168.1.1 --proxy http://proxy:8080 --proxy-auth user:pass
+
+  Scheduled Scanning:
+    python RedhoodEye.py --target 192.168.1.1 --schedule "0 2 * * *" --job-id daily_scan
+    python RedhoodEye.py --target 192.168.1.1 --schedule daily --job-id daily_scan
+    python RedhoodEye.py --target 192.168.1.1 --schedule hourly --job-id hourly_scan
+    python RedhoodEye.py --list-jobs
+    python RedhoodEye.py --remove-job daily_scan
+
 PORT SETS:
   web        - Web services (80, 443, 8080, 8443, 3000, 5000, 8000, 9000)
   database   - Database services (3306, 5432, 6379, 27017, 1433, 1521, 2181)
@@ -1802,12 +1819,18 @@ PORT SETS:
   email      - Email services (25, 110, 143, 465, 587, 993, 995)
   file       - File services (21, 22, 445, 139)
   common     - Common services (21, 22, 23, 25, 53, 80, 110, 143, 443, 993, 995, 3306, 3389, 5432, 5900, 6379, 8080, 8443, 27017)
-  all        - All ports (1-65535)
+  all        - All ports (1-65535) - WARNING: Large scan, may trigger thread limitation
 
 OUTPUT FORMATS:
   json       - JSON format (default)
   csv        - CSV format for spreadsheet import
   html       - HTML report with styling
+
+SAFETY FEATURES:
+  - Thread limitation: Large scans (>10k ports) with high threads (>200) are limited to 200 threads
+  - Resource management: Proper socket cleanup and thread pool shutdown
+  - Error handling: Comprehensive network error reporting and recovery
+  - Memory efficient: Optimized data structures for large scans
 
 PERFORMANCE TIPS:
   - Use more threads for faster scanning: --threads 200
@@ -1824,6 +1847,13 @@ PERFORMANCE TIPS:
   - Use --randomize to randomize port order for stealth
   - Use --scan-type udp for UDP service detection
   - Use --show-closed to see closed ports in verbose mode
+  - Monitor system resources during large scans
+  - Use appropriate thread counts based on your system capabilities
+
+WARNING MESSAGES:
+  - "Thread count limited to 200 for large scan" - Appears when scanning large port ranges (>10k ports) with high thread counts (>200)
+  - This is a safety feature to prevent system overload
+  - The warning indicates the system is protecting your resources
 """)
 
 def print_banner():

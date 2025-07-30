@@ -4,26 +4,28 @@ A professional network scanner with advanced features - everything in one file!
 
 ## Features
 
-- **Multi-threaded scanning** with intelligent thread management
-- **Banner grabbing** from open ports
-- **Service detection** for common ports
-- **Colored output** with beautiful formatting
-- **Advanced logging** with file rotation
-- **IPv4 and IPv6 support**
-- **Predefined port sets** for common services
-- **Multiple output formats**: JSON, CSV, HTML
-- **Detailed statistics** and reporting
+- **Multi-threaded scanning** with intelligent thread management and safety limits
+- **Banner grabbing** from open ports with enhanced service detection
+- **Service detection** for common ports with version extraction
+- **Colored output** with beautiful formatting and progress display
+- **Advanced logging** with file rotation and thread-safe operations
+- **IPv4 and IPv6 support** with comprehensive target parsing
+- **Predefined port sets** for common services (web, database, remote, email, etc.)
+- **Multiple output formats**: JSON, CSV, HTML with detailed reports
+- **Detailed statistics** and performance metrics
 - **System information tool** with WHOIS lookup and network diagnostics
-- **UDP scanning** for UDP service detection
+- **UDP scanning** for UDP service detection with protocol-specific probes
 - **Stealth scanning** with rate limiting and port randomization
-- **Enhanced service detection** with improved version detection
-- **Advanced service detection** with protocol analysis and version extraction
+- **Enhanced service detection** with improved version detection and protocol analysis
 - **Multiple target support** with CIDR ranges and target files
-- **Improved UDP scanning** with protocol-specific probes
+- **Improved UDP scanning** with protocol-specific probes and ICMP error detection
 - **HTTP/HTTPS Proxy support** for bypassing firewalls
 - **SOCKS4/SOCKS5 Proxy support** for anonymous scanning
-- **Scheduled scanning** with cron-like syntax
-- **Background job management** for continuous monitoring
+- **Scheduled scanning** with cron-like syntax and background job management
+- **Cross-platform compatibility** with automatic OS detection
+- **Resource management** with proper socket cleanup and thread pool shutdown
+- **Error handling** with comprehensive network error reporting
+- **Performance optimization** with intelligent thread limiting for large scans
 
 ## Installation
 
@@ -108,6 +110,19 @@ python RedhoodEye.py --list-jobs
 python RedhoodEye.py --remove-job daily_scan
 ```
 
+### Fast scan mode
+```bash
+python RedhoodEye.py --target 192.168.1.1 --fast-scan
+python RedhoodEye.py --target 192.168.1.1 --banner-timeout 0.5
+```
+
+### Output and reporting
+```bash
+python RedhoodEye.py --target 192.168.1.1 --output results.json --format json
+python RedhoodEye.py --target 192.168.1.1 --output results.csv --format csv
+python RedhoodEye.py --target 192.168.1.1 --output report.html --format html
+```
+
 ## Port Sets
 
 | Set | Description | Ports |
@@ -116,23 +131,40 @@ python RedhoodEye.py --remove-job daily_scan
 | `database` | Database services | 3306, 5432, 6379, 27017, 1433, 1521, 2181 |
 | `remote` | Remote access | 22, 23, 3389, 5900, 5901, 5902, 5903 |
 | `email` | Email services | 25, 110, 143, 465, 587, 993, 995 |
+| `file` | File services | 21, 22, 445, 139 |
 | `common` | Common services | 21, 22, 23, 25, 53, 80, 110, 143, 443, 993, 995, 3306, 3389, 5432, 5900, 6379, 8080, 8443, 27017 |
 | `all` | All ports | 1-65535 |
 
+## Safety Features
+
+### Thread Limitation
+The scanner automatically limits thread count for large scans to prevent system overload:
+- **Large scans** (>10,000 ports) with high thread counts (>200) are automatically limited to 200 threads
+- **Warning message** appears when thread limitation is applied
+- **System protection** against resource exhaustion
+
+### Resource Management
+- **Proper socket cleanup** after each connection attempt
+- **Thread pool shutdown** to prevent resource leaks
+- **Memory efficient** scanning with optimized data structures
+- **Error recovery** with graceful handling of network failures
+
 ## Colored Output
 
-- **Green**: Success messages
-- **Blue**: Statistics and progress
-- **Yellow**: Warnings
-- **Red**: Errors
-- **Magenta**: Banner information
-- **White**: Headers
+- **Green**: Success messages and open ports
+- **Blue**: Statistics and progress information
+- **Yellow**: Warnings and system information
+- **Red**: Errors and connection failures
+- **Magenta**: Banner information and service details
+- **White**: Headers and separators
+- **Cyan**: Performance metrics and timing information
 
 ## Example Output
 
 ### Port Scan Output
 ```
-STARTING PORT SCAN
+RedhoodEye - Advanced Network Scanner
+============================================================
 Target: 192.168.1.1
 Ports: 1000 ports
 Threads: 100
@@ -165,6 +197,12 @@ WHOIS Record:
 Target system information check completed
 ```
 
+### Warning Example (Large Scans)
+```
+04:01:21 [WARNING] Thread count limited to 200 for large scan
+```
+*This warning appears when scanning large port ranges (>10,000 ports) with high thread counts (>200) to protect system resources.*
+
 ## Cross-Platform Support
 
 This tool is designed to work across different operating systems:
@@ -174,6 +212,14 @@ This tool is designed to work across different operating systems:
 - **Linux**: Uses `ping -c`, `ip addr`, `ip route` with fallback to `ifconfig` and `netstat -rn`
 
 The tool automatically detects the operating system and uses appropriate commands.
+
+## Performance Tips
+
+- **Use predefined port sets** for faster scanning of common services
+- **Enable fast scan mode** for quick reconnaissance
+- **Use rate limiting** for stealth scanning to avoid detection
+- **Monitor system resources** during large scans
+- **Use appropriate thread counts** based on your system capabilities
 
 ## Security Warning
 
