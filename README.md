@@ -249,4 +249,9 @@ This tool is for educational and authorized testing purposes only. Only scan sys
 
 ## License
 
-This tool is provided for educational purposes. Use responsibly and only on systems you own or have permission to test. 
+This tool is provided for educational purposes. Use responsibly and only on systems you own or have permission to test.
+
+## Contact
+
+For questions, suggestions, or support: amirpedddii@gmail.com
+
